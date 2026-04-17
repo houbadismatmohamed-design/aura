@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAfhk8w5rp8ZI-nJ0cr-T7cEC9om_NfZYg",
@@ -13,51 +13,25 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Liste complète des catégories pour l'index
-const categories = [
-    { id: "food", name: "FOOD", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=100" },
-    { id: "tech", name: "TECH", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=100" },
-    { id: "bijoux", name: "BIJOUX", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=100" },
-    { id: "homme", name: "HOMME", img: "https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?w=100" },
-    { id: "femme", name: "FEMME", img: "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=100" },
-    { id: "enfants", name: "KIDS", img: "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?w=100" },
-    { id: "auto", name: "AUTO", img: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=100" }
-];
-
-function renderCategories() {
-    const grid = document.getElementById('category-grid');
-    if(!grid) return;
-    grid.innerHTML = "";
-    categories.forEach(cat => {
-        grid.innerHTML += `
-            <div onclick="filterByCategory('${cat.id}')" class="flex flex-col items-center cursor-pointer">
-                <div class="w-14 h-14 rounded-full border-2 border-aura-gold overflow-hidden shadow-md bg-white">
-                    <img src="${cat.img}" class="w-full h-full object-cover">
-                </div>
-                <span class="text-[9px] font-bold mt-2 uppercase">${cat.name}</span>
+// Cette fonction affiche tes produits Firebase dans le design d'hier
+onSnapshot(collection(db, "products"), (snapshot) => {
+    const list = document.getElementById('product-list');
+    list.innerHTML = ""; // Vide la liste avant de remplir
+    
+    snapshot.forEach((doc) => {
+        const p = doc.data();
+        // On utilise ici exactement le même HTML que dans ton index.html d'hier
+        list.innerHTML += `
+            <div class="bg-white rounded-xl p-3 shadow-md border-b-2 border-aura-gold relative">
+                <button class="absolute top-4 right-4 z-10 bg-white/80 rounded-full w-7 h-7 flex items-center justify-center shadow">
+                    <i class="fa-solid fa-heart text-gray-300"></i>
+                </button>
+                <img src="${p.img || 'https://via.placeholder.com/150'}" class="w-full h-32 object-cover rounded-lg mb-2">
+                <h4 class="text-[11px] font-bold truncate uppercase">${p.name}</h4>
+                <p class="font-black text-xs text-aura-blue">${p.price} DA</p>
+                <p class="text-[9px] text-aura-gold font-bold mt-1 underline">
+                    <i class="fa-solid fa-store"></i> Boutique AURA
+                </p>
             </div>`;
     });
-}
-
-window.filterByCategory = (catId) => {
-    const q = catId ? query(collection(db, "products"), where("cat", "==", catId)) : query(collection(db, "products"));
-    
-    onSnapshot(q, (snapshot) => {
-        const list = document.getElementById('product-list');
-        list.innerHTML = "";
-        
-        snapshot.forEach((doc) => {
-            const p = doc.data();
-            list.innerHTML += `
-                <div class="bg-white rounded-xl p-3 shadow-md border-b-2 border-aura-gold transition-all active:scale-95">
-                    <img src="${p.img || 'https://via.placeholder.com/150'}" class="w-full h-32 object-cover rounded-lg mb-2">
-                    <h4 class="text-[11px] font-bold truncate uppercase">${p.name}</h4>
-                    <p class="font-black text-xs text-blue-900">${p.price} DA</p>
-                    <button class="w-full bg-blue-900 text-yellow-500 text-[10px] py-2 mt-2 rounded-lg font-bold uppercase">Acheter</button>
-                </div>`;
-        });
-    });
-};
-
-renderCategories();
-filterByCategory(null);
+});
