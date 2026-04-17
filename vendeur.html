@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA Business - Dashboard & Stock</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .bg-dark-aura { background-color: #0F172A; }
+        .text-aura-gold { color: #FACC15; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .nav-btn.active { color: #FACC15; border-bottom: 2px solid #FACC15; }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-900">
+
+    <header class="bg-dark-aura p-6 text-white shadow-xl sticky top-0 z-50">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-black italic tracking-tighter text-aura-gold">AURA BUSINESS</h1>
+                <p id="current-tab-title" class="text-[10px] uppercase font-bold text-slate-400">Dashboard & Revenue</p>
+            </div>
+            <div class="w-10 h-10 rounded-full border-2 border-aura-gold overflow-hidden bg-white">
+                <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=100" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </header>
+
+    <nav class="bg-white border-b flex justify-around p-2 sticky top-[88px] z-40 shadow-sm">
+        <button onclick="showTab('dashboard', this)" class="nav-btn py-2 px-4 text-xs font-black uppercase active">Dashboard</button>
+        <button onclick="showTab('orders', this)" class="nav-btn py-2 px-4 text-xs font-black uppercase">Commandes</button>
+        <button onclick="showTab('inventory', this)" class="nav-btn py-2 px-4 text-xs font-black uppercase">Stock</button>
+    </nav>
+
+    <main class="p-4 pb-24 max-w-4xl mx-auto">
+
+        <div id="dashboard" class="tab-content active space-y-6">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase">Ventes du jour</p>
+                    <p class="text-xl font-black">45 800 DA</p>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase">Commandes</p>
+                    <p class="text-xl font-black">12</p>
+                </div>
+            </div>
+
+            <div class="bg-dark-aura p-6 rounded-3xl text-white relative overflow-hidden">
+                <div class="relative z-10">
+                    <h3 class="text-aura-gold font-black uppercase text-sm mb-4 italic">Estimation Redevance AURA</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-400">Total Produits > 200DA (x10 DA)</span>
+                            <span id="fee-fixed" class="font-bold">240 DA</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-400">Total Produits < 200DA (1%)</span>
+                            <span id="fee-percent" class="font-bold">12.50 DA</span>
+                        </div>
+                        <div class="h-[1px] bg-white/10 my-2"></div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-black text-xs uppercase">Reste à payer :</span>
+                            <span id="total-fee" class="text-xl font-black text-aura-gold font-mono tracking-tighter">252.50 DA</span>
+                        </div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-calculator absolute -right-4 -bottom-4 text-white/5 text-8xl"></i>
+            </div>
+        </div>
+
+        <div id="orders" class="tab-content space-y-4">
+            <h3 class="text-xs font-black uppercase text-slate-400 mb-2">Flux de commandes directes</h3>
+            
+            <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm space-y-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="bg-blue-100 text-blue-600 text-[8px] px-2 py-0.5 rounded-full font-black uppercase">Nouveau</span>
+                        <p class="font-black text-lg mt-1">Client #213776...</p>
+                    </div>
+                    <p class="text-[10px] text-slate-400 font-bold italic">Il y a 2 min</p>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl text-xs space-y-1">
+                    <p>• <strong>1x</strong> AirPods Pro (32 000 DA)</p>
+                    <p>• <strong>2x</strong> Coque Silicone (1 200 DA)</p>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button class="bg-green-600 text-white py-3 rounded-xl text-[10px] font-black uppercase shadow-lg shadow-green-200">Confirmer</button>
+                    <button class="bg-slate-900 text-white py-3 rounded-xl text-[10px] font-black uppercase shadow-lg shadow-slate-200" onclick="alert('Message automatique envoyé au client : Produit indisponible en stock.')">Stock épuisé</button>
+                    <button class="bg-red-50 text-red-600 border border-red-100 py-3 rounded-xl text-[10px] font-black uppercase">Rejeter</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="inventory" class="tab-content space-y-6">
+            <div class="bg-white p-6 rounded-3xl border-2 border-dashed border-slate-200 space-y-4">
+                <h3 class="font-black text-xs uppercase text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-aura-gold"></i> Ajouter un nouveau produit
+                </h3>
+                <div class="space-y-3">
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="text" placeholder="Nom du produit" class="w-full bg-slate-100 p-3 rounded-xl text-xs outline-none">
+                        <input type="number" placeholder="Prix (DA)" class="w-full bg-slate-100 p-3 rounded-xl text-xs outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="number" placeholder="Quantité dispo" class="w-full bg-slate-100 p-3 rounded-xl text-xs outline-none">
+                        <select class="w-full bg-slate-100 p-3 rounded-xl text-xs outline-none">
+                            <option>Catégorie</option>
+                            <option>Tech</option>
+                            <option>Food</option>
+                        </select>
+                    </div>
+                    <div class="bg-slate-100 border-2 border-dotted border-slate-300 h-24 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:bg-slate-200 transition">
+                        <i class="fa-solid fa-camera text-slate-400 mb-1"></i>
+                        <span class="text-[9px] font-black text-slate-500 uppercase">Ajouter Photos (Max 3)</span>
+                    </div>
+                    <button class="w-full bg-dark-aura text-aura-gold py-4 rounded-2xl font-black uppercase text-xs tracking-widest shadow-xl">Publier le produit</button>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <h3 class="font-black text-xs uppercase text-slate-400">Mon Catalogue (12 produits)</h3>
+                <div class="bg-white p-3 rounded-2xl flex items-center gap-4 shadow-sm">
+                    <img src="https://images.unsplash.com/photo-1588423770574-91021160dfdf?w=100" class="w-14 h-14 rounded-xl object-cover">
+                    <div class="flex-1">
+                        <p class="text-xs font-black uppercase">AirPods Pro</p>
+                        <p class="text-[10px] text-slate-400 font-bold italic">Prix: 32 000 DA | Stock: 05</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                        <button class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-500"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function showTab(tabId, btn) {
+            // Cacher tous les onglets
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            // Dé-sélectionner tous les boutons
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            // Activer l'onglet choisi
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+
+            // Changer le titre du header
+            const titles = {
+                'dashboard': 'Dashboard & Revenue',
+                'orders': 'Commandes Directes',
+                'inventory': 'Gestion du Stock'
+            };
+            document.getElementById('current-tab-title').innerText = titles[tabId];
+        }
+
+        // Simuler le calculateur d'abonnement selon tes règles
+        function calculateFees(salesData) {
+            // Logique : Si Prix > 200 -> 10DA. Si Prix <= 200 -> 1%
+            // C'est ici qu'on fera le calcul réel avec la base de données
+        }
+    </script>
+</body>
+</html>
