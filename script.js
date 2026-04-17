@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Ta config Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAfhk8w5rp8ZI-nJ0cr-T7cEC9om_NfZYg",
     authDomain: "aura-marketplace-dz.firebaseapp.com",
@@ -14,16 +13,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Liste des catégories avec images
+// Liste complète des catégories pour l'index
 const categories = [
     { id: "food", name: "FOOD", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=100" },
     { id: "tech", name: "TECH", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=100" },
     { id: "bijoux", name: "BIJOUX", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=100" },
     { id: "homme", name: "HOMME", img: "https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?w=100" },
-    { id: "femme", name: "FEMME", img: "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=100" }
+    { id: "femme", name: "FEMME", img: "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=100" },
+    { id: "enfants", name: "KIDS", img: "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?w=100" },
+    { id: "auto", name: "AUTO", img: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=100" }
 ];
 
-// 1. Afficher les catégories au démarrage
 function renderCategories() {
     const grid = document.getElementById('category-grid');
     if(!grid) return;
@@ -34,12 +34,11 @@ function renderCategories() {
                 <div class="w-14 h-14 rounded-full border-2 border-aura-gold overflow-hidden shadow-md bg-white">
                     <img src="${cat.img}" class="w-full h-full object-cover">
                 </div>
-                <span class="text-[9px] font-bold mt-2">${cat.name}</span>
+                <span class="text-[9px] font-bold mt-2 uppercase">${cat.name}</span>
             </div>`;
     });
 }
 
-// 2. Lire les produits Firebase (Tous ou par catégorie)
 window.filterByCategory = (catId) => {
     const q = catId ? query(collection(db, "products"), where("cat", "==", catId)) : query(collection(db, "products"));
     
@@ -47,11 +46,6 @@ window.filterByCategory = (catId) => {
         const list = document.getElementById('product-list');
         list.innerHTML = "";
         
-        if (snapshot.empty) {
-            list.innerHTML = "<p class='col-span-2 text-center text-gray-400 py-10 text-xs'>Aucun produit dans cette catégorie.</p>";
-            return;
-        }
-
         snapshot.forEach((doc) => {
             const p = doc.data();
             list.innerHTML += `
@@ -59,12 +53,11 @@ window.filterByCategory = (catId) => {
                     <img src="${p.img || 'https://via.placeholder.com/150'}" class="w-full h-32 object-cover rounded-lg mb-2">
                     <h4 class="text-[11px] font-bold truncate uppercase">${p.name}</h4>
                     <p class="font-black text-xs text-blue-900">${p.price} DA</p>
-                    <button class="w-full bg-blue-900 text-yellow-500 text-[10px] py-2 mt-2 rounded-lg font-bold uppercase">Détails</button>
+                    <button class="w-full bg-blue-900 text-yellow-500 text-[10px] py-2 mt-2 rounded-lg font-bold uppercase">Acheter</button>
                 </div>`;
         });
     });
 };
 
-// Lancement
 renderCategories();
-filterByCategory(null); // Affiche tout au début
+filterByCategory(null);
