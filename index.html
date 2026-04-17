@@ -9,51 +9,51 @@
     <style>
         .bg-aura-blue { background-color: #0A192F; }
         .text-aura-gold { color: #D4AF37; }
-        .border-aura-gold { border-color: #D4AF37; }
-        #product-modal { background: rgba(10, 25, 47, 0.8); backdrop-filter: blur(5px); }
+        #product-modal { background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); }
+        #cart-panel { transition: transform 0.3s ease; }
     </style>
 </head>
-<body class="bg-gray-100 font-sans text-aura-blue">
+<body class="bg-gray-50 font-sans text-aura-blue">
 
-    <header class="bg-aura-blue text-aura-gold p-4 sticky top-0 z-50 flex justify-between items-center shadow-xl">
-        <i class="fa-solid fa-bars-staggered text-xl"></i>
-        <h1 class="text-3xl font-bold tracking-widest">AURA</h1>
-        <div class="relative cursor-pointer" onclick="openCart()">
+    <header class="bg-aura-blue text-aura-gold p-4 sticky top-0 z-50 flex justify-between items-center shadow-lg">
+        <i class="fa-solid fa-bars-staggered text-xl cursor-pointer"></i>
+        <h1 class="text-2xl font-black tracking-widest">AURA</h1>
+        <div class="relative cursor-pointer" onclick="toggleCart(true)">
             <i class="fa-solid fa-cart-shopping text-xl"></i>
-            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
         </div>
     </header>
 
     <main class="max-w-6xl mx-auto p-4">
         <div id="category-grid" class="grid grid-cols-4 gap-4 py-4 text-center"></div>
-        <h2 class="mt-8 text-xs font-black uppercase text-gray-400 tracking-widest mb-4">Découvrir</h2>
-        <div id="product-list" class="grid grid-cols-2 gap-4"></div>
+        <div id="product-list" class="grid grid-cols-2 gap-4 mt-6"></div>
     </main>
 
-    <div id="product-modal" class="hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center">
-        <div class="bg-white w-full max-w-lg rounded-t-[2rem] sm:rounded-[2rem] overflow-hidden shadow-2xl">
+    <div id="product-modal" class="hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0">
+        <div class="bg-white w-full max-w-lg rounded-t-[2rem] overflow-hidden">
             <div id="modal-content"></div>
-            <button onclick="closeModal()" class="w-full py-4 text-gray-400 text-xs font-bold uppercase">Fermer</button>
+            <button onclick="closeModal()" class="w-full py-4 text-gray-400 font-bold text-xs uppercase">Fermer</button>
         </div>
     </div>
 
-    <div id="cart-panel" class="hidden fixed inset-0 bg-white z-[110] p-6 overflow-y-auto">
+    <div id="cart-panel" class="fixed inset-y-0 right-0 w-full bg-white z-[110] transform translate-x-full p-6 shadow-2xl">
         <div class="flex justify-between items-center mb-8">
-            <h2 class="text-2xl font-black">MON PANIER</h2>
-            <i class="fa-solid fa-xmark text-2xl" onclick="closeCart()"></i>
+            <h2 class="text-xl font-black">PANIER</h2>
+            <i class="fa-solid fa-xmark text-2xl" onclick="toggleCart(false)"></i>
         </div>
         <div id="cart-items" class="space-y-4"></div>
-        <div class="mt-10 border-t pt-6">
-            <div class="flex justify-between font-black text-xl mb-6"><span>TOTAL</span><span id="cart-total">0 DA</span></div>
-            <button onclick="checkout()" class="w-full bg-aura-blue text-aura-gold py-5 rounded-2xl font-black shadow-2xl uppercase">Valider la commande</button>
+        <div class="mt-10 pt-6 border-t">
+            <div class="flex justify-between font-black text-lg mb-6"><span>TOTAL</span><span id="cart-total">0 DA</span></div>
+            <button onclick="checkout()" class="w-full bg-aura-blue text-aura-gold py-4 rounded-xl font-black uppercase">Confirmer la commande</button>
         </div>
     </div>
 
     <script type="module" src="script.js"></script>
     <script>
         function closeModal() { document.getElementById('product-modal').classList.add('hidden'); }
-        function openCart() { document.getElementById('cart-panel').classList.remove('hidden'); }
-        function closeCart() { document.getElementById('cart-panel').classList.add('hidden'); }
+        function toggleCart(open) { 
+            document.getElementById('cart-panel').style.transform = open ? "translateX(0)" : "translateX(100%)"; 
+        }
     </script>
 </body>
 </html>
