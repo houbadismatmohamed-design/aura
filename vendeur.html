@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURA Business - Panel</title>
+    <title>AURA Business - Panel Complet</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -12,52 +12,90 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         .nav-btn.active { color: #FACC15; border-bottom: 3px solid #FACC15; }
+        @keyframes notify { 0% { transform: scale(1); } 50% { transform: scale(1.05); background-color: #fef08a; } 100% { transform: scale(1); } }
+        .new-order { animation: notify 1s ease-in-out; }
     </style>
 </head>
-<body class="bg-slate-50 pb-20">
+<body class="bg-slate-50 pb-24">
 
     <header class="bg-dark-aura p-6 text-white shadow-2xl sticky top-0 z-50">
-        <h1 class="text-xl font-black text-aura-gold">AURA BUSINESS</h1>
-        <p class="text-[10px] uppercase font-bold text-slate-400">Gestion Boutique Live</p>
+        <div class="flex justify-between items-center max-w-xl mx-auto">
+            <div>
+                <h1 class="text-xl font-black text-aura-gold italic">AURA BUSINESS</h1>
+                <p id="tab-title" class="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Dashboard & Revenus</p>
+            </div>
+            <div class="flex gap-3">
+                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            </div>
+        </div>
     </header>
 
-    <nav class="bg-white border-b flex justify-around p-2 sticky top-[80px] z-40">
+    <nav class="bg-white border-b flex justify-around p-2 sticky top-[80px] z-40 shadow-sm">
         <button onclick="showTab('dashboard', this)" class="nav-btn py-3 px-4 text-xs font-black uppercase active">Revenus</button>
+        <button onclick="showTab('orders', this)" class="nav-btn py-3 px-4 text-xs font-black uppercase relative">
+            Commandes
+            <span id="order-badge" class="hidden absolute top-1 right-0 bg-red-500 text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center">!</span>
+        </button>
         <button onclick="showTab('inventory', this)" class="nav-btn py-3 px-4 text-xs font-black uppercase">Mon Stock</button>
     </nav>
 
     <main class="p-4 max-w-xl mx-auto">
+
         <div id="dashboard" class="tab-content active space-y-4">
-            <div class="bg-dark-aura p-6 rounded-[2rem] text-white shadow-2xl border-b-4 border-aura-gold">
-                <h3 class="text-aura-gold font-black uppercase text-[10px] mb-4">Calculateur Redevance</h3>
-                <div id="fee-box" class="space-y-2 text-xs opacity-80 italic text-center">Ajoutez des produits pour calculer</div>
+            <div class="bg-dark-aura p-8 rounded-[2.5rem] text-white shadow-2xl border-b-4 border-aura-gold">
+                <h3 class="text-aura-gold font-black uppercase text-[10px] mb-6 tracking-widest">Estimation Redevance AURA</h3>
+                <div id="fee-summary" class="text-center py-4">
+                    <span id="total-fees" class="text-4xl font-black text-white">0.00 DA</span>
+                    <p class="text-[10px] text-slate-400 mt-2 uppercase font-bold italic">Total à régler ce mois</p>
+                </div>
+                <div class="mt-6 grid grid-cols-2 gap-4 text-[10px] font-bold uppercase opacity-60">
+                    <div class="bg-white/5 p-3 rounded-2xl">Fixe (>200DA): 10DA</div>
+                    <div class="bg-white/5 p-3 rounded-2xl">Variable (<200DA): 1%</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="orders" class="tab-content space-y-4">
+            <div id="orders-list" class="space-y-3">
+                <div class="text-center py-20 text-slate-300">
+                    <i class="fa-solid fa-box-open text-5xl mb-4"></i>
+                    <p class="text-xs font-bold uppercase">Aucune commande reçue</p>
+                </div>
             </div>
         </div>
 
         <div id="inventory" class="tab-content space-y-6">
-            <div class="bg-white p-6 rounded-[2rem] border-2 border-dashed border-slate-200 shadow-xl space-y-4">
-                <h3 class="font-black text-xs uppercase text-slate-400">Nouveau Produit</h3>
-                <input type="text" id="p-name" placeholder="Nom" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none">
+            <div class="bg-white p-6 rounded-[2rem] shadow-xl border border-slate-100 space-y-4">
+                <h3 class="font-black text-xs uppercase text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle"></i> Ajouter au catalogue
+                </h3>
+                <input type="text" id="p-name" placeholder="Nom du produit" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 ring-aura-gold transition-all">
                 <div class="flex gap-2">
-                    <input type="number" id="p-price" placeholder="Prix (DA)" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none">
-                    <select id="p-cat" class="bg-slate-100 p-4 rounded-2xl text-sm outline-none uppercase font-bold">
+                    <input type="number" id="p-price" placeholder="Prix (DA)" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 ring-aura-gold">
+                    <select id="p-cat" class="bg-slate-100 p-4 rounded-2xl text-sm outline-none font-bold uppercase text-slate-600">
                         <option value="food">Food</option>
                         <option value="tech">Tech</option>
                         <option value="bijoux">Bijoux</option>
                         <option value="homme">Homme</option>
+                        <option value="femme">Femme</option>
                     </select>
                 </div>
-                <input type="text" id="p-img" placeholder="Lien photo (URL)" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none">
-                <button onclick="publish()" id="btn-pub" class="w-full bg-dark-aura text-aura-gold py-5 rounded-2xl font-black uppercase text-xs shadow-xl active:scale-95 transition">Publier le produit</button>
+                <input type="text" id="p-img" placeholder="Lien de la photo (URL)" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none focus:ring-2 ring-aura-gold">
+                <button onclick="publish()" id="btn-pub" class="w-full bg-dark-aura text-aura-gold py-5 rounded-2xl font-black uppercase text-xs shadow-xl active:scale-95 transition-all">
+                    Mettre en ligne sur AURA
+                </button>
             </div>
 
-            <div id="my-list" class="space-y-3"></div>
+            <div id="stock-list" class="space-y-3 pt-4">
+                <h3 class="font-black text-xs uppercase text-slate-400 ml-2">Mon Catalogue Live</h3>
+                </div>
         </div>
+
     </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAfhk8w5rp8ZI-nJ0cr-T7cEC9om_NfZYg",
@@ -71,48 +109,110 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // --- FONCTION PUBLIER ---
         window.publish = async () => {
             const name = document.getElementById('p-name').value;
             const price = parseFloat(document.getElementById('p-price').value);
             const cat = document.getElementById('p-cat').value;
             const img = document.getElementById('p-img').value;
+            const btn = document.getElementById('btn-pub');
 
-            if(!name || !price) return alert("Nom et Prix requis !");
-            
-            await addDoc(collection(db, "products"), { name, price, cat, img, createdAt: Date.now() });
-            alert("En ligne !");
-            document.getElementById('p-name').value = ""; document.getElementById('p-price').value = "";
+            if(!name || !price) return alert("Veuillez remplir le nom et le prix !");
+
+            btn.disabled = true; btn.innerText = "PUBLICATION...";
+
+            try {
+                await addDoc(collection(db, "products"), {
+                    name, price, cat, 
+                    img: img || "https://via.placeholder.com/300",
+                    createdAt: Date.now()
+                });
+                alert("Produit ajouté avec succès !");
+                document.getElementById('p-name').value = "";
+                document.getElementById('p-price').value = "";
+            } catch (e) {
+                alert("Erreur: " + e.message);
+            } finally {
+                btn.disabled = false; btn.innerText = "Mettre en ligne sur AURA";
+            }
         };
 
-        onSnapshot(collection(db, "products"), (snap) => {
-            const list = document.getElementById('my-list');
-            const feeBox = document.getElementById('fee-box');
-            list.innerHTML = '<h3 class="font-black text-xs uppercase text-slate-400 ml-2">Mon Catalogue</h3>';
-            let fee = 0;
+        // --- ECOUTER LE STOCK ET REVENUS ---
+        onSnapshot(query(collection(db, "products"), orderBy("createdAt", "desc")), (snap) => {
+            const list = document.getElementById('stock-list');
+            const totalFeesDisplay = document.getElementById('total-fees');
+            list.innerHTML = '<h3 class="font-black text-xs uppercase text-slate-400 ml-2">Mon Catalogue Live</h3>';
+            
+            let totalFees = 0;
+
             snap.forEach(d => {
                 const p = d.data();
-                fee += (p.price > 200 ? 10 : p.price * 0.01);
+                // Calcul redevance
+                totalFees += (p.price > 200 ? 10 : p.price * 0.01);
+
                 list.innerHTML += `
-                    <div class="bg-white p-4 rounded-3xl flex items-center justify-between shadow-sm border border-slate-100">
+                    <div class="bg-white p-4 rounded-3xl flex items-center justify-between shadow-sm border border-slate-100 animate-fadeIn">
                         <div class="flex items-center gap-4">
-                            <img src="${p.img || 'https://via.placeholder.com/100'}" class="w-12 h-12 rounded-xl object-cover shadow">
+                            <img src="${p.img}" class="w-12 h-12 rounded-xl object-cover shadow-inner">
                             <div>
                                 <p class="text-[10px] font-black uppercase text-slate-800">${p.name}</p>
-                                <p class="text-[9px] font-bold text-blue-600 uppercase">${p.price} DA</p>
+                                <p class="text-[9px] font-bold text-blue-600 uppercase">${p.price} DA | <span class="text-slate-400">${p.cat}</span></p>
                             </div>
                         </div>
-                        <button onclick="del('${d.id}')" class="text-red-400 p-2"><i class="fa-solid fa-trash-can"></i></button>
+                        <button onclick="deleteProd('${d.id}')" class="w-10 h-10 rounded-full bg-red-50 text-red-400 flex items-center justify-center active:bg-red-500 active:text-white transition-all">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
                     </div>`;
             });
-            feeBox.innerHTML = `<span class="text-aura-gold font-black text-lg">${fee.toFixed(2)} DA</span><br>Redevance Totale AURA`;
+            totalFeesDisplay.innerText = totalFees.toFixed(2) + " DA";
         });
 
-        window.del = async (id) => { if(confirm("Supprimer ?")) await deleteDoc(doc(db, "products", id)); };
+        // --- ECOUTER LES COMMANDES ---
+        onSnapshot(query(collection(db, "orders"), orderBy("date", "desc")), (snap) => {
+            const container = document.getElementById('orders-list');
+            const badge = document.getElementById('order-badge');
+            
+            if(snap.empty) {
+                container.innerHTML = `<div class="text-center py-20 text-slate-300"><i class="fa-solid fa-box-open text-5xl mb-4"></i><p class="text-xs font-bold uppercase">Aucune commande</p></div>`;
+                badge.classList.add('hidden');
+                return;
+            }
+
+            badge.classList.remove('hidden');
+            container.innerHTML = "";
+            
+            snap.forEach(d => {
+                const o = d.data();
+                container.innerHTML += `
+                    <div class="bg-white p-5 rounded-[2rem] shadow-md border-l-4 border-aura-gold mb-3 new-order">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <p class="text-[10px] font-black text-slate-400 uppercase">Commande du ${o.date || 'Aujourd\'hui'}</p>
+                                <p class="text-lg font-black text-blue-900">${o.total} DA</p>
+                            </div>
+                            <span class="bg-green-100 text-green-600 text-[8px] font-black px-3 py-1 rounded-full uppercase">Nouveau</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl space-y-1">
+                            ${o.items.map(item => `<div class="flex justify-between text-[10px] font-bold text-slate-600 uppercase"><span>• ${item.name}</span><span>${item.price} DA</span></div>`).join('')}
+                        </div>
+                        <button onclick="alert('Client à contacter sur WhatsApp (Bientôt)')" class="w-full mt-4 bg-green-500 text-white py-3 rounded-xl text-[10px] font-black uppercase flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> Contacter le client
+                        </button>
+                    </div>`;
+            });
+        });
+
+        // --- TOOLS ---
+        window.deleteProd = async (id) => { if(confirm("Supprimer ce produit définitivement ?")) await deleteDoc(doc(db, "products", id)); };
+
         window.showTab = (id, btn) => {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             btn.classList.add('active');
+            
+            const titles = {'dashboard': 'Dashboard & Revenus', 'orders': 'Commandes Directes', 'inventory': 'Gestion du Stock'};
+            document.getElementById('tab-title').innerText = titles[id];
         };
     </script>
 </body>
