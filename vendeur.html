@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURA Business - Dashboard</title>
+    <title>AURA Business - Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -11,80 +11,53 @@
         .text-aura-gold { color: #FACC15; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .nav-btn.active { color: #FACC15; border-bottom: 2px solid #FACC15; }
+        .nav-btn.active { color: #FACC15; border-bottom: 3px solid #FACC15; }
     </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-900 pb-20">
+<body class="bg-slate-50 pb-20">
 
-    <header class="bg-dark-aura p-6 text-white shadow-xl sticky top-0 z-50">
-        <div class="flex justify-between items-center">
-            <div>
-                <h1 class="text-xl font-black text-aura-gold">AURA BUSINESS</h1>
-                <p id="shop-name" class="text-[10px] uppercase font-bold text-slate-400">Panel Gestionnaire</p>
-            </div>
-        </div>
+    <header class="bg-dark-aura p-6 text-white shadow-2xl sticky top-0 z-50">
+        <h1 class="text-xl font-black text-aura-gold">AURA BUSINESS</h1>
+        <p class="text-[10px] uppercase font-bold text-slate-400">Gestion Boutique Live</p>
     </header>
 
-    <nav class="bg-white border-b flex justify-around p-2 sticky top-[88px] z-40 shadow-sm">
-        <button onclick="showTab('dashboard', this)" class="nav-btn py-2 px-4 text-xs font-black uppercase active">Revenus</button>
-        <button onclick="showTab('orders', this)" class="nav-btn py-2 px-4 text-xs font-black uppercase">Commandes</button>
-        <button onclick="showTab('inventory', this)" class="nav-btn py-2 px-4 text-xs font-black uppercase">Stock</button>
+    <nav class="bg-white border-b flex justify-around p-2 sticky top-[80px] z-40">
+        <button onclick="showTab('dashboard', this)" class="nav-btn py-3 px-4 text-xs font-black uppercase active">Revenus</button>
+        <button onclick="showTab('inventory', this)" class="nav-btn py-3 px-4 text-xs font-black uppercase">Mon Stock</button>
     </nav>
 
-    <main class="p-4 max-w-4xl mx-auto">
-        
-        <div id="dashboard" class="tab-content active space-y-6">
-            <div class="bg-dark-aura p-6 rounded-3xl text-white">
-                <h3 class="text-aura-gold font-black uppercase text-[10px] mb-4">Calculateur de redevance</h3>
-                <div id="fee-display" class="space-y-2 text-xs text-slate-300">
-                    <p>En attente de produits...</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="orders" class="tab-content space-y-4">
-            <div class="text-center py-10">
-                <i class="fa-solid fa-box-open text-slate-200 text-5xl mb-4"></i>
-                <p class="text-slate-400 text-xs font-bold uppercase">Aucune commande reçue pour le moment</p>
+    <main class="p-4 max-w-xl mx-auto">
+        <div id="dashboard" class="tab-content active space-y-4">
+            <div class="bg-dark-aura p-6 rounded-[2rem] text-white shadow-2xl border-b-4 border-aura-gold">
+                <h3 class="text-aura-gold font-black uppercase text-[10px] mb-4">Calculateur Redevance</h3>
+                <div id="fee-box" class="space-y-2 text-xs opacity-80 italic text-center">Ajoutez des produits pour calculer</div>
             </div>
         </div>
 
         <div id="inventory" class="tab-content space-y-6">
-            <div class="bg-white p-6 rounded-3xl border-2 border-dashed border-slate-200 space-y-4">
-                <h3 class="font-black text-xs uppercase text-slate-400 italic">Ajouter un produit</h3>
-                <div class="space-y-3">
-                    <input type="text" id="p-name" placeholder="Nom du produit" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none">
-                    <div class="grid grid-cols-2 gap-3">
-                        <input type="number" id="p-price" placeholder="Prix (DA)" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none">
-                        <input type="number" id="p-qty" placeholder="Quantité" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none">
-                    </div>
-                    
-                    <select id="p-cat" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none">
-                        <option value="food">FOOD TO GO</option>
-                        <option value="bijoux">BIJOUX</option>
-                        <option value="tech">TECH</option>
-                        <option value="auto">AUTO</option>
-                        <option value="homme">HOMME</option>
-                        <option value="femme">FEMME</option>
-                        <option value="enfants">ENFANTS</option>
+            <div class="bg-white p-6 rounded-[2rem] border-2 border-dashed border-slate-200 shadow-xl space-y-4">
+                <h3 class="font-black text-xs uppercase text-slate-400">Nouveau Produit</h3>
+                <input type="text" id="p-name" placeholder="Nom" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none">
+                <div class="flex gap-2">
+                    <input type="number" id="p-price" placeholder="Prix (DA)" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none">
+                    <select id="p-cat" class="bg-slate-100 p-4 rounded-2xl text-sm outline-none uppercase font-bold">
+                        <option value="food">Food</option>
+                        <option value="tech">Tech</option>
+                        <option value="bijoux">Bijoux</option>
+                        <option value="homme">Homme</option>
                     </select>
-
-                    <input type="text" id="p-img" placeholder="Lien de l'image (URL)" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none">
-                    
-                    <button onclick="publishProduct()" id="btn-pub" class="w-full bg-dark-aura text-aura-gold py-4 rounded-2xl font-black uppercase text-xs shadow-xl active:scale-95 transition">
-                        Publier le produit
-                    </button>
                 </div>
+                <input type="text" id="p-img" placeholder="Lien photo (URL)" class="w-full bg-slate-100 p-4 rounded-2xl text-sm outline-none">
+                <button onclick="publish()" id="btn-pub" class="w-full bg-dark-aura text-aura-gold py-5 rounded-2xl font-black uppercase text-xs shadow-xl active:scale-95 transition">Publier le produit</button>
             </div>
 
-            <div id="my-products" class="space-y-3">
-                </div>
+            <div id="my-list" class="space-y-3"></div>
         </div>
     </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAfhk8w5rp8ZI-nJ0cr-T7cEC9om_NfZYg",
@@ -98,80 +71,47 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // FONCTION PUBLIER
-        window.publishProduct = async () => {
+        window.publish = async () => {
             const name = document.getElementById('p-name').value;
             const price = parseFloat(document.getElementById('p-price').value);
-            const qty = document.getElementById('p-qty').value;
             const cat = document.getElementById('p-cat').value;
             const img = document.getElementById('p-img').value;
 
-            if(!name || !price) return alert("Veuillez remplir au moins le nom et le prix !");
-
-            const btn = document.getElementById('btn-pub');
-            btn.innerText = "PUBLICATION...";
-            btn.disabled = true;
-
-            try {
-                await addDoc(collection(db, "products"), {
-                    name, price, qty, cat, img,
-                    createdAt: Date.now()
-                });
-                alert("Produit ajouté avec succès !");
-                // Reset formulaire
-                document.getElementById('p-name').value = "";
-                document.getElementById('p-price').value = "";
-            } catch (e) {
-                alert("Erreur : " + e.message);
-            } finally {
-                btn.innerText = "PUBLIER LE PRODUIT";
-                btn.disabled = false;
-            }
+            if(!name || !price) return alert("Nom et Prix requis !");
+            
+            await addDoc(collection(db, "products"), { name, price, cat, img, createdAt: Date.now() });
+            alert("En ligne !");
+            document.getElementById('p-name').value = ""; document.getElementById('p-price').value = "";
         };
 
-        // CHARGER LES PRODUITS ET FRAIS
-        onSnapshot(query(collection(db, "products")), (snapshot) => {
-            const container = document.getElementById('my-products');
-            const feeBox = document.getElementById('fee-display');
-            container.innerHTML = "";
-            let totalFixed = 0;
-            let totalPercent = 0;
-
-            snapshot.forEach((docSnap) => {
-                const p = docSnap.data();
-                const id = docSnap.id;
-
-                // Calcul frais AURA
-                if(p.price > 200) totalFixed += 10;
-                else totalPercent += (p.price * 0.01);
-
-                container.innerHTML += `
-                    <div class="bg-white p-3 rounded-2xl flex items-center gap-4 shadow-sm border border-slate-100">
-                        <img src="${p.img || 'https://via.placeholder.com/100'}" class="w-12 h-12 rounded-xl object-cover">
-                        <div class="flex-1">
-                            <p class="text-[10px] font-black uppercase">${p.name}</p>
-                            <p class="text-[9px] text-slate-400 font-bold">${p.price} DA | Cat: ${p.cat}</p>
+        onSnapshot(collection(db, "products"), (snap) => {
+            const list = document.getElementById('my-list');
+            const feeBox = document.getElementById('fee-box');
+            list.innerHTML = '<h3 class="font-black text-xs uppercase text-slate-400 ml-2">Mon Catalogue</h3>';
+            let fee = 0;
+            snap.forEach(d => {
+                const p = d.data();
+                fee += (p.price > 200 ? 10 : p.price * 0.01);
+                list.innerHTML += `
+                    <div class="bg-white p-4 rounded-3xl flex items-center justify-between shadow-sm border border-slate-100">
+                        <div class="flex items-center gap-4">
+                            <img src="${p.img || 'https://via.placeholder.com/100'}" class="w-12 h-12 rounded-xl object-cover shadow">
+                            <div>
+                                <p class="text-[10px] font-black uppercase text-slate-800">${p.name}</p>
+                                <p class="text-[9px] font-bold text-blue-600 uppercase">${p.price} DA</p>
+                            </div>
                         </div>
-                        <button onclick="deleteProduct('${id}')" class="text-red-400 p-2"><i class="fa-solid fa-trash text-xs"></i></button>
+                        <button onclick="del('${d.id}')" class="text-red-400 p-2"><i class="fa-solid fa-trash-can"></i></button>
                     </div>`;
             });
-
-            feeBox.innerHTML = `
-                <div class="flex justify-between"><span>Fixe (>200DA) :</span><span>${totalFixed} DA</span></div>
-                <div class="flex justify-between"><span>1% (<200DA) :</span><span>${totalPercent.toFixed(2)} DA</span></div>
-                <div class="h-[1px] bg-white/10 my-2"></div>
-                <div class="flex justify-between text-aura-gold font-black"><span>TOTAL :</span><span>${(totalFixed + totalPercent).toFixed(2)} DA</span></div>
-            `;
+            feeBox.innerHTML = `<span class="text-aura-gold font-black text-lg">${fee.toFixed(2)} DA</span><br>Redevance Totale AURA`;
         });
 
-        window.deleteProduct = async (id) => {
-            if(confirm("Supprimer ce produit ?")) await deleteDoc(doc(db, "products", id));
-        };
-
-        window.showTab = (tabId, btn) => {
+        window.del = async (id) => { if(confirm("Supprimer ?")) await deleteDoc(doc(db, "products", id)); };
+        window.showTab = (id, btn) => {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            document.getElementById(id).classList.add('active');
             btn.classList.add('active');
         };
     </script>
